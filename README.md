@@ -59,4 +59,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For any inquiries, please contact [your email].
+For any inquiries, please contact [i221749@nu.edu.pk].
