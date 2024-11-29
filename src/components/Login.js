@@ -14,7 +14,7 @@ function LoginSignup() {
 
   const handleSubmit = async (url) => {
     try {
-      const response = await axios.post("http://localhost:3000" + url, {
+      const response = await axios.post("http://localhost:8080" + url, {
         username,
         password,
         role,

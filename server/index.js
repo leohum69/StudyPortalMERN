@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const Student = require("./models/student");
+const Courses = require("./models/courses");
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -139,7 +140,7 @@ app.post('/login', async (req, res) => {
         SECRET_KEY, 
         { expiresIn: "1h" } 
       );
-      console.log(token);
+      // console.log(token);
       res.status(201).send({ message: "Signup successful",token, role });
     } catch (error) {
       console.error(error);
@@ -171,7 +172,7 @@ app.post('/login', async (req, res) => {
   
     try {
       const username = req.user.username; 
-      console.log(username); 
+      // console.log(username); 
   
    
       let student = await Student.findOne({ username });
@@ -253,6 +254,23 @@ app.post('/login', async (req, res) => {
   });
 
 
-app.listen(3000, function() {
-  console.log('Server started on port 3000');
+  app.get('/courses', async (req, res) => {
+    try {
+      // Retrieve all courses from the database
+      const courses = await Courses.find({}, 'name'); // Retrieve only the 'name' field
+      
+      // Map the course documents to an array of names
+      const courseNames = courses.map(course => course.name);
+      
+      // Send the array of course names as a response
+      res.json(courseNames);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      res.status(500).json({ message: 'Failed to retrieve courses' });
+    }
+  });
+
+
+app.listen(8080, function() {
+  console.log('Server started on port 8080');
 });

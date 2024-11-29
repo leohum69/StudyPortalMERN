@@ -17,7 +17,7 @@ function App() {
         
         {/* Student-related routes */}
         <Route path="/student-profile" element={<StudentProfile />} />
-        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
         {/* <Route path="/student-attendance" element={<StudentAttendance />} /> */}
         {/* <Route path="/student-courses" element={<StudentCourses />} /> */}
         {/* <Route path="/student-assignments" element={<StudentAssignments />} /> */}
