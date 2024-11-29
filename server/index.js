@@ -270,6 +270,48 @@ app.post('/login', async (req, res) => {
     }
   });
 
+  app.post('/courses', authenticateJWT, async (req, res) => {
+    const { courses } = req.body;  
+    const { username, role } = req.user; 
+    // console.log(courses);
+  
+    if (!Array.isArray(courses) || courses.length === 0) {
+      return res.status(400).send({ message: 'Please provide a valid array of course names' });
+    }
+  
+    try {
+      for (const courseName of courses) {
+        // Find the course document by name
+        const course = await Courses.findOne({ name: courseName });
+  
+        if (!course) {
+          return res.status(404).send({ message: `Course ${courseName} not found` });
+        }
+  
+        if (role === 'Student') {
+
+          if (!course.students.includes(username)) {
+            course.students.push(username);
+          }
+        } else if (role === 'Teacher') {
+          if (course.teacher !== username) {
+            course.teacher = username;
+          }
+        } else {
+          return res.status(403).send({ message: 'Unauthorized role' });
+        }
+        await course.save();
+      }
+
+      res.status(200).send({ message: 'Courses updated successfully' });
+    } catch (error) {
+      console.error('Error updating courses:', error);
+      res.status(500).send({ message: 'Failed to update courses' });
+    }
+  });
+
+
+
 
 app.listen(8080, function() {
   console.log('Server started on port 8080');

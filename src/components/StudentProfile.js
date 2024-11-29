@@ -71,6 +71,7 @@ const StudentProfile = () => {
     if (profileData.profilePicture) {
       formData.append("profilePicture", profileData.profilePicture);
     }
+    const selectedCourses = profileData.selectedCourses;
 
     try {
       const response = await axios.post("http://localhost:8080/save-profile", formData, {
@@ -79,6 +80,16 @@ const StudentProfile = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      const coursesResponse = await axios.post(
+        "http://localhost:8080/courses",
+        { courses: selectedCourses },  // Array of selected courses
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Include JWT token in the Authorization header
+          }
+        }
+      );
 
       alert(response.data.message || "Profile saved successfully!");
       // Redirect to dashboard after profile is saved
